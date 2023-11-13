@@ -25,7 +25,16 @@ const Event = {
     },
   },
 
-  benefit: {},
+  benefit: {
+    christmas(date) {
+      if (Number(date) <= Event.period.christmas) {
+        const basePrice = 1000;
+        const discountUnit = 100;
+        return date * discountUnit + basePrice - discountUnit;
+      }
+      return 0;
+    },
+  },
 
   badge: {
     5000: '별',
