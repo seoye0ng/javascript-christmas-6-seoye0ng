@@ -50,4 +50,18 @@ describe('이벤트 혜택 기능 테스트', () => {
     // then
     expect(special).toBe(1000);
   });
+
+  test('증정 이벤트 혜택을 반환하는 기능 테스트', () => {
+    // given
+    const totalOrderPrice = '280000';
+    const totalOrderPrice2 = '16000';
+
+    // when
+    const gift = Event.benefit.gift(totalOrderPrice);
+    const gift2 = Event.benefit.gift(totalOrderPrice2);
+
+    // then
+    expect(gift).toBe(25000);
+    expect(gift2).toBe(0);
+  });
 });
