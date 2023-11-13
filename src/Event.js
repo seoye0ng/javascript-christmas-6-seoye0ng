@@ -70,6 +70,11 @@ const Event = {
 
       return totalDiscountNumber * discountPrice;
     },
+
+    special() {
+      const discountAmount = 1000;
+      return discountAmount;
+    },
   },
 
   badge: {
