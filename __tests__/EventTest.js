@@ -35,11 +35,19 @@ describe('이벤트 혜택 기능 테스트', () => {
     const menus2 = { 양송이수프: '1', 레드와인: '1' };
 
     // when
-    const weekday = Event.benefit.weekend(menus);
-    const weekday2 = Event.benefit.weekend(menus2);
+    const weekend = Event.benefit.weekend(menus);
+    const weekend2 = Event.benefit.weekend(menus2);
 
     // then
-    expect(weekday).toBe(2023);
-    expect(weekday2).toBe(0);
+    expect(weekend).toBe(2023);
+    expect(weekend2).toBe(0);
+  });
+
+  test('특별 할인 혜택을 반환하는 기능 테스트', () => {
+    // when
+    const special = Event.benefit.special();
+
+    // then
+    expect(special).toBe(1000);
   });
 });
