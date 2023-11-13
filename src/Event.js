@@ -72,8 +72,14 @@ const Event = {
     },
 
     special() {
-      const discountAmount = 1000;
-      return discountAmount;
+      const discountPrice = 1000;
+      return discountPrice;
+    },
+
+    gift(totalOrderPrice) {
+      const requiredPrice = 120000;
+      const giftPrice = 25000;
+      return Number(totalOrderPrice) >= requiredPrice ? giftPrice : 0;
     },
   },
 
