@@ -52,6 +52,24 @@ const Event = {
 
       return totalDiscountNumber * discountPrice;
     },
+
+    weekend(menus) {
+      const discountPrice = 2023;
+      const discountNumbers = Object.entries(menus)
+        .filter(
+          ([key, value]) =>
+            Object.keys(Event.menu.main).includes(key) && Number(value),
+        )
+        .map(([, value]) => Number(value));
+      const totalDiscountNumber = discountNumbers.reduce(
+        (totalCount, currentCount) => {
+          return totalCount + currentCount;
+        },
+        0,
+      );
+
+      return totalDiscountNumber * discountPrice;
+    },
   },
 
   badge: {
