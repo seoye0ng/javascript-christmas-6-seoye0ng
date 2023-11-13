@@ -35,8 +35,8 @@ describe('이벤트 혜택 기능 테스트', () => {
     const menus2 = { 양송이수프: '1', 레드와인: '1' };
 
     // when
-    const weekday = Event.benefit.weekday(menus);
-    const weekday2 = Event.benefit.weekday(menus2);
+    const weekday = Event.benefit.weekend(menus);
+    const weekday2 = Event.benefit.weekend(menus2);
 
     // then
     expect(weekday).toBe(2023);
