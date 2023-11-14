@@ -53,4 +53,20 @@ describe('기능 테스트', () => {
     // then
     expect(calBenefitPrice).toBe(4223);
   });
+
+  test('총 혜택 금액 계산 기능 테스트', () => {
+    // given
+    const totalOrderPrice = 65000;
+    const totalBenefitPrice = 4223;
+
+    // when
+    const app = new App();
+    const calDiscountedTotalOrderPrice = app.calculateDiscountedTotalOrderPrice(
+      totalOrderPrice,
+      totalBenefitPrice,
+    );
+
+    // then
+    expect(calDiscountedTotalOrderPrice).toBe(60777);
+  });
 });
