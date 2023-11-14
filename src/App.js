@@ -11,6 +11,7 @@ class App {
       orderMenuList,
       totalOrderPrice,
     );
+    const totalBenefitPrice = this.calculateBenefitPrice(benefitList);
   }
 
   // 할인 전 총주문 금액계산
@@ -20,7 +21,12 @@ class App {
 
     Object.entries(orderMenuList).forEach(([menu, quantity]) => {
       for (let i = 0; i < menuType.length; i++) {
-        totalOrderPrice += this.calculateMenuPrice(menuType, i, menu, quantity);
+        totalOrderPrice += this.calculateOneMenuPrice(
+          menuType,
+          i,
+          menu,
+          quantity,
+        );
       }
     });
 
@@ -41,12 +47,19 @@ class App {
 
     benefitList['크리스마스 디데이 할인'] = Event.benefit.christmas(date);
     isWeekDay
-      ? (benefitList['평일 할인'] = Event.benefit.weekday(date, orderMenuList))
-      : (benefitList['주말 할인'] = Event.benefit.weekend(date, orderMenuList));
+      ? (benefitList['평일 할인'] = Event.benefit.weekday(orderMenuList))
+      : (benefitList['주말 할인'] = Event.benefit.weekend(orderMenuList));
     if (isSpecialDay) benefitList['특별 할인'] = Event.benefit.special();
     benefitList['증정 이벤트'] = Event.benefit.gift(totalOrderPrice);
 
     return benefitList;
+  }
+
+  // 총 혜택 금액
+  calculateBenefitPrice(benefitList) {
+    return Object.values(benefitList).reduce((totalPrice, currentPrice) => {
+      return totalPrice + currentPrice;
+    }, 0);
   }
 }
 
