@@ -37,6 +37,11 @@ const OutputView = {
   printBenefitPrice(price) {
     Console.print(`-${Number(price).toLocaleString()}원`);
   },
+
+  // 12월 이벤트 배지
+  printEventBadge(badge) {
+    Console.print(badge !== null ? badge : '없음');
+  },
 };
 
 export default OutputView;
