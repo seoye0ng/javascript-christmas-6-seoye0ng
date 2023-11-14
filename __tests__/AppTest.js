@@ -54,7 +54,7 @@ describe('기능 테스트', () => {
     expect(calBenefitPrice).toBe(4223);
   });
 
-  test('총 혜택 금액 계산 기능 테스트', () => {
+  test('할인 후 예상 결제 금액', () => {
     // given
     const totalOrderPrice = 65000;
     const totalBenefitPrice = 4223;
@@ -68,5 +68,17 @@ describe('기능 테스트', () => {
 
     // then
     expect(calDiscountedTotalOrderPrice).toBe(60777);
+  });
+
+  test('이벤트 배지 부여 기능 테스트', () => {
+    // given
+    const totalBenefitPrice = 19999;
+
+    // when
+    const app = new App();
+    const giveEventBadge = app.giveEventBadge(totalBenefitPrice);
+
+    // then
+    expect(giveEventBadge).toBe('트리');
   });
 });
