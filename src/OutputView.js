@@ -1,6 +1,10 @@
 import { Console } from '@woowacourse/mission-utils';
 
 const OutputView = {
+  printGuideMessage(message) {
+    Console.print(message);
+  },
+
   // 주문메뉴
   printOrderMenu(orderMenuList) {
     Object.entries(orderMenuList).forEach(([key, value]) => {
