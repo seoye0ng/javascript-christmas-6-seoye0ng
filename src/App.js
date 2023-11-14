@@ -16,6 +16,7 @@ class App {
       totalOrderPrice,
       totalBenefitPrice,
     );
+    const badge = this.giveEventBadge();
   }
 
   // 할인 전 총주문 금액계산
@@ -69,6 +70,14 @@ class App {
   // 할인 후 예상 결제 금액
   calculateDiscountedTotalOrderPrice(totalOrderPrice, totalBenefitPrice) {
     return totalOrderPrice - totalBenefitPrice;
+  }
+
+  // 이벤트 배지 부여하기
+  giveEventBadge(totalBenefitPrice) {
+    if (totalBenefitPrice >= 20000) return Event.badge[20000];
+    if (totalBenefitPrice >= 10000) return Event.badge[10000];
+    if (totalBenefitPrice >= 5000) return Event.badge[5000];
+    return null;
   }
 }
 
