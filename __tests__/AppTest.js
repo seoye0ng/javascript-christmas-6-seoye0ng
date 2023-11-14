@@ -21,7 +21,7 @@ describe('기능 테스트', () => {
 
     // when
     const app = new App();
-    const calTotalOrderPrice = app.checkEventBenefit(
+    const checkEventBenefit = app.checkEventBenefit(
       date,
       orderMenuList,
       totalOrderPrice,
@@ -34,6 +34,23 @@ describe('기능 테스트', () => {
       '특별 할인': 1000,
       '증정 이벤트': 0,
     };
-    expect(calTotalOrderPrice).toEqual(eventBenefit);
+    expect(checkEventBenefit).toEqual(eventBenefit);
+  });
+
+  test('총 혜택 금액 계산 기능 테스트', () => {
+    // given
+    const benefitList = {
+      '크리스마스 디데이 할인': 1200,
+      '평일 할인': 2023,
+      '특별 할인': 1000,
+      '증정 이벤트': 0,
+    };
+
+    // when
+    const app = new App();
+    const calBenefitPrice = app.calculateBenefitPrice(benefitList);
+
+    // then
+    expect(calBenefitPrice).toBe(4223);
   });
 });
