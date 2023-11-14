@@ -6,6 +6,11 @@ class App {
     const date = await InputView.readDate();
     const orderMenuList = await InputView.readMenu();
     const totalOrderPrice = this.calculateTotalOrderPrice(orderMenuList);
+    const benefitList = this.checkEventBenefit(
+      date,
+      orderMenuList,
+      totalOrderPrice,
+    );
   }
 
   // 할인 전 총주문 금액계산
@@ -26,6 +31,22 @@ class App {
     return Event.menu[menuType[i]][menu]
       ? Event.menu[menuType[i]][menu] * Number(quantity)
       : 0;
+  }
+
+  // 각각의 혜택을 확인해서 혜택 값을 객체로 반환
+  checkEventBenefit(date, orderMenuList, totalOrderPrice) {
+    const isWeekDay = [3, 4, 5, 6].includes(Number(date) % 7);
+    const isSpecialDay = date % 7 === 3 || date === Event.period.christmas;
+    const benefitList = {};
+
+    benefitList['크리스마스 디데이 할인'] = Event.benefit.christmas(date);
+    isWeekDay
+      ? (benefitList['평일 할인'] = Event.benefit.weekday(date, orderMenuList))
+      : (benefitList['주말 할인'] = Event.benefit.weekend(date, orderMenuList));
+    if (isSpecialDay) benefitList['특별 할인'] = Event.benefit.special();
+    benefitList['증정 이벤트'] = Event.benefit.gift(totalOrderPrice);
+
+    return benefitList;
   }
 }
 
