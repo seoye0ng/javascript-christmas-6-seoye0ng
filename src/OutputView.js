@@ -32,6 +32,11 @@ const OutputView = {
           Console.print(`${key}: -${Number(value).toLocaleString()}원`);
         });
   },
+
+  // 총혜택 금액
+  printBenefitPrice(price) {
+    Console.print(`-${Number(price).toLocaleString()}원`);
+  },
 };
 
 export default OutputView;
