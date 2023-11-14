@@ -12,6 +12,11 @@ const OutputView = {
   printTotalOrderPrice(price) {
     Console.print(`${Number(price).toLocaleString()}원`);
   },
+
+  // 증정 메뉴
+  printGiftMenu(price) {
+    Console.print(price !== 0 ? Number(price).toLocaleString() : '없음');
+  },
 };
 
 export default OutputView;
