@@ -1,8 +1,33 @@
 import { Console } from '@woowacourse/mission-utils';
+import { CONTENT_TYPE } from './constants/OutputViewConstant.js';
 
 const OutputView = {
   printGuideMessage(message) {
     Console.print(message);
+  },
+
+  printSection(contentType, output) {
+    this.printTitle(contentType);
+    this.printContent(contentType, output);
+  },
+
+  printTitle(title) {
+    Console.print(title);
+  },
+
+  printContent(contentType, output) {
+    if (CONTENT_TYPE.orderMenu === contentType) this.printOrderMenu(output);
+    else if (CONTENT_TYPE.totalOrderPrice === contentType)
+      this.printTotalOrderPrice(output);
+    else if (CONTENT_TYPE.giftMenu === contentType) this.printGiftMenu(output);
+    else if (CONTENT_TYPE.benefitList === contentType)
+      this.printBenefitList(output);
+    else if (CONTENT_TYPE.benefitPrice === contentType)
+      this.printBenefitPrice(output);
+    else if (CONTENT_TYPE.discountedTotalOrderPrice === contentType)
+      this.printTotalOrderPrice(output);
+    else if (CONTENT_TYPE.eventBadge === contentType)
+      this.printEventBadge(output);
   },
 
   // 주문메뉴
