@@ -12,4 +12,28 @@ describe('기능 테스트', () => {
     // then
     expect(calTotalOrderPrice).toBe(65000);
   });
+
+  test('각각의 혜택을 확인해서 혜택 값을 객체로 반환하는 기능 테스트', () => {
+    // given
+    const date = '3';
+    const orderMenuList = { 해산물파스타: '1', 초코케이크: '1' };
+    const totalOrderPrice = 65000;
+
+    // when
+    const app = new App();
+    const calTotalOrderPrice = app.checkEventBenefit(
+      date,
+      orderMenuList,
+      totalOrderPrice,
+    );
+
+    // then
+    const eventBenefit = {
+      '크리스마스 디데이 할인': 1200,
+      '평일 할인': 2023,
+      '특별 할인': 1000,
+      '증정 이벤트': 0,
+    };
+    expect(calTotalOrderPrice).toEqual(eventBenefit);
+  });
 });
