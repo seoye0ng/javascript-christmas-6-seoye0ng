@@ -12,6 +12,10 @@ class App {
       totalOrderPrice,
     );
     const totalBenefitPrice = this.calculateBenefitPrice(benefitList);
+    const discountedTotalOrderPrice = this.calculateDiscountedTotalOrderPrice(
+      totalOrderPrice,
+      totalBenefitPrice,
+    );
   }
 
   // 할인 전 총주문 금액계산
@@ -60,6 +64,11 @@ class App {
     return Object.values(benefitList).reduce((totalPrice, currentPrice) => {
       return totalPrice + currentPrice;
     }, 0);
+  }
+
+  // 할인 후 예상 결제 금액
+  calculateDiscountedTotalOrderPrice(totalOrderPrice, totalBenefitPrice) {
+    return totalOrderPrice - totalBenefitPrice;
   }
 }
 
