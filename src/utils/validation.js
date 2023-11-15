@@ -27,7 +27,7 @@ function isValidMenuName(name) {
 }
 
 function transformOrderMenuFormat(menu) {
-  if (!menu.includes('-')) throw new Error(ERROR_MESSAGE.INVALID_ORDER);
+  if (!menu.includes('-')) throwValidationError(ERROR_MESSAGE.INVALID_ORDER);
 
   const [name, quantity] = menu.split('-');
   return { name, quantity: Number(quantity) };
@@ -36,10 +36,10 @@ function transformOrderMenuFormat(menu) {
 function isDrinkOnlyOrder(orderMenus) {
   const isDrinkOnly = orderMenus.every((menu) => {
     const { name } = transformOrderMenuFormat(menu);
-    return Object.keys(Event.menu.dessert).includes(name);
+    return Object.keys(Event.menu.drink).includes(name);
   });
 
-  return isDrinkOnly || orderMenus.length < 0;
+  return isDrinkOnly;
 }
 
 function isInvalidQuantity(quantity) {
@@ -55,14 +55,14 @@ function isOrderLimitOver(orderList, quantity) {
 }
 
 export function validateMenu(orderMenus) {
-  if (!orderMenus || isDrinkOnlyOrder(orderMenus))
+  if (!orderMenus || orderMenus.length < 0 || isDrinkOnlyOrder(orderMenus))
     throwValidationError(ERROR_MESSAGE.INVALID_ORDER);
 
   const orderList = {};
   orderMenus.forEach((menu) => {
     const { name, quantity } = transformOrderMenuFormat(menu);
 
-    if (!isValidMenuName(name) || orderList[name])
+    if (!isValidMenuName(name) || orderList[name] || !quantity || !name)
       throwValidationError(ERROR_MESSAGE.INVALID_ORDER);
     if (isInvalidQuantity(quantity) || isOrderLimitOver(orderList, quantity))
       throwValidationError(ERROR_MESSAGE.INVALID_ORDER);
