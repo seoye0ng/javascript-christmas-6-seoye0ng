@@ -16,20 +16,20 @@ class App {
   }
 
   applyEvent(date, orderMenuList) {
-    const totalOrderPrice = this.calculateTotalPrice(orderMenuList);
-    const benefitList = this.checkBenefit(date, orderMenuList, totalOrderPrice);
-    const totalBenefitPrice = this.calculateBenefitPrice(benefitList);
-    const discountedTotalOrderPrice = this.calculateDiscountedTotalPrice(
-      totalOrderPrice,
-      totalBenefitPrice,
+    const totalPrice = this.calculateTotalPrice(orderMenuList);
+    const benefitList = this.checkBenefit(date, orderMenuList, totalPrice);
+    const benefitPrice = this.calculateBenefitPrice(benefitList);
+    const discountedTotalPrice = this.calculateDiscountedTotalPrice(
+      totalPrice,
+      benefitPrice,
     );
-    const badge = this.checkBadge(totalBenefitPrice);
+    const badge = this.checkBadge(benefitPrice);
 
     return {
-      totalOrderPrice,
+      totalPrice,
       benefitList,
-      totalBenefitPrice,
-      discountedTotalOrderPrice,
+      benefitPrice,
+      discountedTotalPrice,
       badge,
     };
   }
@@ -39,9 +39,9 @@ class App {
     const menuType = ['appetizer', 'main', 'dessert', 'drink'];
 
     return Object.entries(orderMenuList).reduce(
-      (totalOrderPrice, [menu, quantity]) => {
+      (totalPrice, [menu, quantity]) => {
         return (
-          totalOrderPrice + this.calculateOneMenuPrice(menuType, menu, quantity)
+          totalPrice + this.calculateOneMenuPrice(menuType, menu, quantity)
         );
       },
       0,
@@ -56,17 +56,17 @@ class App {
   }
 
   // 각각의 혜택을 확인해서 혜택 값을 객체로 반환
-  checkBenefit(date, orderMenuList, totalOrderPrice) {
+  checkBenefit(date, orderMenuList, totalPrice) {
     const isWeekDay = [3, 4, 5, 6].includes(Number(date) % 7);
     const isSpecialDay = date % 7 === 3 || date === Event.period.christmas;
     const benefitList = {};
-
-    benefitList['크리스마스 디데이 할인'] = Event.benefit.christmas(date);
+    const type = Event.benefitType;
+    benefitList[type.christmas] = Event.benefit.christmas(date);
     isWeekDay
-      ? (benefitList['평일 할인'] = Event.benefit.weekday(orderMenuList))
-      : (benefitList['주말 할인'] = Event.benefit.weekend(orderMenuList));
-    if (isSpecialDay) benefitList['특별 할인'] = Event.benefit.special();
-    benefitList['증정 이벤트'] = Event.benefit.gift(totalOrderPrice);
+      ? (benefitList[type.weekday] = Event.benefit.weekday(orderMenuList))
+      : (benefitList[type.weekend] = Event.benefit.weekend(orderMenuList));
+    if (isSpecialDay) benefitList[type.special] = Event.benefit.special();
+    benefitList[type.gift] = Event.benefit.gift(totalPrice);
 
     return benefitList;
   }
@@ -79,15 +79,15 @@ class App {
   }
 
   // 할인 후 예상 결제 금액
-  calculateDiscountedTotalPrice(totalOrderPrice, totalBenefitPrice) {
-    return totalOrderPrice - totalBenefitPrice;
+  calculateDiscountedTotalPrice(totalPrice, benefitPrice) {
+    return totalPrice - benefitPrice;
   }
 
   // 이벤트 배지 부여하기
-  checkBadge(totalBenefitPrice) {
-    if (totalBenefitPrice >= 20000) return Event.badge[20000];
-    if (totalBenefitPrice >= 10000) return Event.badge[10000];
-    if (totalBenefitPrice >= 5000) return Event.badge[5000];
+  checkBadge(benefitPrice) {
+    if (benefitPrice >= 20000) return Event.badge[20000];
+    if (benefitPrice >= 10000) return Event.badge[10000];
+    if (benefitPrice >= 5000) return Event.badge[5000];
     return null;
   }
 
@@ -102,16 +102,16 @@ class App {
   printOrderDetails(orderMenuList, eventResult) {
     const sections = [
       { type: CONTENT_TYPE.orderMenu, data: orderMenuList },
-      { type: CONTENT_TYPE.totalOrderPrice, data: eventResult.totalOrderPrice },
+      { type: CONTENT_TYPE.totalPrice, data: eventResult.totalPrice },
       {
         type: CONTENT_TYPE.giftMenu,
-        data: eventResult.benefitList['증정 이벤트'],
+        data: eventResult.benefitList[Event.benefitType.gift],
       },
       { type: CONTENT_TYPE.benefitList, data: eventResult.benefitList },
-      { type: CONTENT_TYPE.benefitPrice, data: eventResult.totalBenefitPrice },
+      { type: CONTENT_TYPE.benefitPrice, data: eventResult.benefitPrice },
       {
-        type: CONTENT_TYPE.discountedTotalOrderPrice,
-        data: eventResult.discountedTotalOrderPrice,
+        type: CONTENT_TYPE.discountedTotalPrice,
+        data: eventResult.discountedTotalPrice,
       },
       { type: CONTENT_TYPE.eventBadge, data: eventResult.badge },
     ];

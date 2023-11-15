@@ -28,7 +28,7 @@ const OutputView = {
       this.printBenefitList(output);
     else if (CONTENT_TYPE.benefitPrice === contentType)
       this.printBenefitPrice(output);
-    else if (CONTENT_TYPE.discountedTotalOrderPrice === contentType)
+    else if (CONTENT_TYPE.discountedTotalPrice === contentType)
       this.printTotalOrderPrice(output);
     else if (CONTENT_TYPE.eventBadge === contentType)
       this.printEventBadge(output);

@@ -5,11 +5,11 @@ export const PRINT_MESSAGE = (date) => ({
 
 export const CONTENT_TYPE = {
   orderMenu: '<주문 메뉴>',
-  totalOrderPrice: '<할인 전 총주문 금액>',
+  totalPrice: '<할인 전 총주문 금액>',
   giftMenu: '<증정 메뉴>',
   benefitList: '<혜택 내역>',
   benefitPrice: '<총혜택 금액>',
-  discountedTotalOrderPrice: '<할인 후 예상 결제 금액>',
+  discountedTotalPrice: '<할인 후 예상 결제 금액>',
   eventBadge: '<12월 이벤트 배지>',
 };
 
