@@ -1,10 +1,21 @@
 import InputView from './InputView.js';
+import OutputView from './OutputView.js';
 import Event from './Event.js';
+import { CONTENT_TYPE, PRINT_MESSAGE } from './constants/OutputViewConstant.js';
 
 class App {
   async run() {
+    this.printWelcomeMessage();
+
     const date = await InputView.readDate();
     const orderMenuList = await InputView.readMenu();
+    const eventResult = this.eventStart(date, orderMenuList);
+
+    this.printPreviewMessage(date);
+    this.printOrderDetails(orderMenuList, eventResult);
+  }
+
+  eventStart(date, orderMenuList) {
     const totalOrderPrice = this.calculateTotalOrderPrice(orderMenuList);
     const benefitList = this.checkEventBenefit(
       date,
@@ -16,7 +27,15 @@ class App {
       totalOrderPrice,
       totalBenefitPrice,
     );
-    const badge = this.giveEventBadge();
+    const badge = this.giveEventBadge(totalBenefitPrice);
+
+    return {
+      totalOrderPrice,
+      benefitList,
+      totalBenefitPrice,
+      discountedTotalOrderPrice,
+      badge,
+    };
   }
 
   // 할인 전 총주문 금액계산
@@ -78,6 +97,36 @@ class App {
     if (totalBenefitPrice >= 10000) return Event.badge[10000];
     if (totalBenefitPrice >= 5000) return Event.badge[5000];
     return null;
+  }
+
+  printWelcomeMessage() {
+    OutputView.printGuideMessage(PRINT_MESSAGE.greeting);
+  }
+
+  printPreviewMessage(date) {
+    OutputView.printGuideMessage(PRINT_MESSAGE(date).preview);
+  }
+
+  printOrderDetails(orderMenuList, eventResult) {
+    const sections = [
+      { type: CONTENT_TYPE.orderMenu, data: orderMenuList },
+      { type: CONTENT_TYPE.totalOrderPrice, data: eventResult.totalOrderPrice },
+      {
+        type: CONTENT_TYPE.giftMenu,
+        data: eventResult.benefitList['증정 이벤트'],
+      },
+      { type: CONTENT_TYPE.benefitList, data: eventResult.benefitList },
+      { type: CONTENT_TYPE.benefitPrice, data: eventResult.totalBenefitPrice },
+      {
+        type: CONTENT_TYPE.discountedTotalOrderPrice,
+        data: eventResult.discountedTotalOrderPrice,
+      },
+      { type: CONTENT_TYPE.eventBadge, data: eventResult.badge },
+    ];
+
+    sections.forEach((section) => {
+      OutputView.printSection(section.type, section.data);
+    });
   }
 }
 
