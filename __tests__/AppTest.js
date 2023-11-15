@@ -7,7 +7,7 @@ describe('기능 테스트', () => {
 
     // when
     const app = new App();
-    const calTotalOrderPrice = app.calculateTotalOrderPrice(orderMenuList);
+    const calTotalOrderPrice = app.calculateTotalPrice(orderMenuList);
 
     // then
     expect(calTotalOrderPrice).toBe(65000);
@@ -21,7 +21,7 @@ describe('기능 테스트', () => {
 
     // when
     const app = new App();
-    const checkEventBenefit = app.checkEventBenefit(
+    const checkEventBenefit = app.checkBenefit(
       date,
       orderMenuList,
       totalOrderPrice,
@@ -61,7 +61,7 @@ describe('기능 테스트', () => {
 
     // when
     const app = new App();
-    const calDiscountedTotalOrderPrice = app.calculateDiscountedTotalOrderPrice(
+    const calDiscountedTotalOrderPrice = app.calculateDiscountedTotalPrice(
       totalOrderPrice,
       totalBenefitPrice,
     );
@@ -76,7 +76,7 @@ describe('기능 테스트', () => {
 
     // when
     const app = new App();
-    const giveEventBadge = app.giveEventBadge(totalBenefitPrice);
+    const giveEventBadge = app.checkBadge(totalBenefitPrice);
 
     // then
     expect(giveEventBadge).toBe('트리');

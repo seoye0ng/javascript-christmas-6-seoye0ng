@@ -9,25 +9,21 @@ class App {
 
     const date = await InputView.readDate();
     const orderMenuList = await InputView.readMenu();
-    const eventResult = this.eventStart(date, orderMenuList);
+    const eventResult = this.applyEvent(date, orderMenuList);
 
     this.printPreviewMessage(date);
     this.printOrderDetails(orderMenuList, eventResult);
   }
 
-  eventStart(date, orderMenuList) {
-    const totalOrderPrice = this.calculateTotalOrderPrice(orderMenuList);
-    const benefitList = this.checkEventBenefit(
-      date,
-      orderMenuList,
-      totalOrderPrice,
-    );
+  applyEvent(date, orderMenuList) {
+    const totalOrderPrice = this.calculateTotalPrice(orderMenuList);
+    const benefitList = this.checkBenefit(date, orderMenuList, totalOrderPrice);
     const totalBenefitPrice = this.calculateBenefitPrice(benefitList);
-    const discountedTotalOrderPrice = this.calculateDiscountedTotalOrderPrice(
+    const discountedTotalOrderPrice = this.calculateDiscountedTotalPrice(
       totalOrderPrice,
       totalBenefitPrice,
     );
-    const badge = this.giveEventBadge(totalBenefitPrice);
+    const badge = this.checkBadge(totalBenefitPrice);
 
     return {
       totalOrderPrice,
@@ -39,7 +35,7 @@ class App {
   }
 
   // 할인 전 총주문 금액 계산
-  calculateTotalOrderPrice(orderMenuList) {
+  calculateTotalPrice(orderMenuList) {
     const menuType = ['appetizer', 'main', 'dessert', 'drink'];
 
     return Object.entries(orderMenuList).reduce(
@@ -60,7 +56,7 @@ class App {
   }
 
   // 각각의 혜택을 확인해서 혜택 값을 객체로 반환
-  checkEventBenefit(date, orderMenuList, totalOrderPrice) {
+  checkBenefit(date, orderMenuList, totalOrderPrice) {
     const isWeekDay = [3, 4, 5, 6].includes(Number(date) % 7);
     const isSpecialDay = date % 7 === 3 || date === Event.period.christmas;
     const benefitList = {};
@@ -83,12 +79,12 @@ class App {
   }
 
   // 할인 후 예상 결제 금액
-  calculateDiscountedTotalOrderPrice(totalOrderPrice, totalBenefitPrice) {
+  calculateDiscountedTotalPrice(totalOrderPrice, totalBenefitPrice) {
     return totalOrderPrice - totalBenefitPrice;
   }
 
   // 이벤트 배지 부여하기
-  giveEventBadge(totalBenefitPrice) {
+  checkBadge(totalBenefitPrice) {
     if (totalBenefitPrice >= 20000) return Event.badge[20000];
     if (totalBenefitPrice >= 10000) return Event.badge[10000];
     if (totalBenefitPrice >= 5000) return Event.badge[5000];
