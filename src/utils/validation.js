@@ -7,7 +7,9 @@ function throwValidationError(message) {
 
 export function validateDate(date) {
   const parsedDate = Number(date);
-  if (parsedDate < 1 || parsedDate > 31 || Number.isNaN(parsedDate))
+  if (!date || Number.isNaN(parsedDate))
+    throwValidationError(ERROR_MESSAGE.INVALID_DATE);
+  if (parsedDate < 1 || parsedDate > 31)
     throwValidationError(ERROR_MESSAGE.INVALID_DATE);
 
   return date;
