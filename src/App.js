@@ -38,29 +38,25 @@ class App {
     };
   }
 
-  // 할인 전 총주문 금액계산
+  // 할인 전 총주문 금액 계산
   calculateTotalOrderPrice(orderMenuList) {
-    let totalOrderPrice = 0;
     const menuType = ['appetizer', 'main', 'dessert', 'drink'];
 
-    Object.entries(orderMenuList).forEach(([menu, quantity]) => {
-      for (let i = 0; i < menuType.length; i++) {
-        totalOrderPrice += this.calculateOneMenuPrice(
-          menuType,
-          i,
-          menu,
-          quantity,
+    return Object.entries(orderMenuList).reduce(
+      (totalOrderPrice, [menu, quantity]) => {
+        return (
+          totalOrderPrice + this.calculateOneMenuPrice(menuType, menu, quantity)
         );
-      }
-    });
-
-    return totalOrderPrice;
+      },
+      0,
+    );
   }
 
-  calculateOneMenuPrice(menuType, i, menu, quantity) {
-    return Event.menu[menuType[i]][menu]
-      ? Event.menu[menuType[i]][menu] * Number(quantity)
-      : 0;
+  // 각 메뉴별 가격 계산
+  calculateOneMenuPrice(menuType, menu, quantity) {
+    return menuType.reduce((menuPrice, type) => {
+      return menuPrice + (Event.menu[type][menu] || 0) * Number(quantity);
+    }, 0);
   }
 
   // 각각의 혜택을 확인해서 혜택 값을 객체로 반환
